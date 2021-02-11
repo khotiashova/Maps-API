@@ -6,7 +6,7 @@ map_file = 'map.png'
 
 def gm(ln, lt, m):
     global map_file
-    map_request = f"http://static-maps.yandex.ru/1.x/?ll={ln},{lt}&spn={m},{str(float(m) / 2)}&size=500,450&l=map"
+    map_request = f"http://static-maps.yandex.ru/1.x/?ll={ln},{lt}&spn={m},{str(float(m) / 2)}&size=500,450&l={mod}"
     response = requests.get(map_request)
     if str(response) != '<Response [404]>':
         print('OK')
@@ -24,6 +24,8 @@ running = True
 lnn = input('Введите долготу')
 ltt = input('Введите широту')
 mm = input('Введите масштаб 0-17')
+mod = 'map'
+p = 0
 
 gm(lnn, ltt, mm)
 
@@ -60,7 +62,20 @@ while running:
                 mm = str(float(lnn) + 5)
                 gm(lnn, ltt, mm)
                 screen.blit(pygame.image.load(map_file), (0, 0))
-            # screen.fill()
-    #screen.fill()
+            
+            if event.key == pygame.K_k:
+                if p == 0:
+                    mod = 'sat'
+                    p = p + 1
+                    screen.blit(pygame.image.load(map_file), (0, 0))
+                if p == 1:
+                    mod = 'sat,skl'
+                    p = p + 1
+                    screen.blit(pygame.image.load(map_file), (0, 0))
+                if p == 2:
+                    mod = 'map'
+                    p = 0
+                    screen.blit(pygame.image.load(map_file), (0, 0))
+                
     pygame.display.flip()
 pygame.quit()
